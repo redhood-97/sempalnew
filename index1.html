@@ -3,7 +3,7 @@
   <head>
   	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sempal</title>
+    <title>Sempals</title>
     <!--
     <script src="jquery-2.1.4.js"></script>
 	-->
@@ -13,11 +13,46 @@
   	-->
   	<!--
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js">--></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js">-->
     <link rel="stylesheet" href="styles.css">
-    
+    <!--
     <script type="text/javascript" src="scripts/app.js" charset="utf-8">
     </script>
+	-->
+
+	<script type="text/javascript" charset="utf-8">
+		var request = new XMLHttpRequest();
+    	voltage_val = 0;
+    	current_val = 0;
+        freq_val = 0;
+    	function call() {
+        	request.open('GET', 'http://192.168.43.249:8080/watch', true);
+        	request.onload = function () {
+
+        // console.log(this.responseText);
+		        var data = JSON.parse(this.responseText);
+        		console.log(data["voltage_reading"]);
+        		console.log(data["current_reading"]);
+        		console.log(data["frequency_reading"]);
+        	    $('#voltage_log').text(data["voltage_reading"]);
+        	    $('#current_log').text(data["current_reading"]);
+        	    $('#frequency_log').text(data["frequency_reading"]);
+        		voltage_val = data["voltage_reading"];
+        		current_val = data["current_reading"];
+        		freq_val = data["frequency_reading"];
+    		}
+    		request.send();
+		}
+		setInterval(call, 1000);
+	</script>
+    
+   <script src="https://code.highcharts.com/highcharts.js"></script>
+   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+   <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <!--
+    <script type="text/javascript" src="scripts/newapp.js" charset="utf-8">
+    </script>
+	-->
 	<!--
 	<script data-main="scripts/app" src="scripts/require.js"></script>
     -->
@@ -26,12 +61,264 @@
    
     </script>
 	-->
+	<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+        Highcharts.chart('voltage_graph', {
+            chart: {
+            type: 'spline',
+            backgroundColor:'rgba(255, 255, 255, 0.0)',
+            animation: Highcharts.svg, // don't animate in old IE
+            marginRight: 10,
+                events: {
+                    load: function () {
+
+        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function () {
+                                var x = (new Date()).getTime(), // current time
+                                y = voltage_val;
+                        series.addPoint([x, y], true, true);
+                        }, 1000);
+                    }
+                }
+            },
+
+            time: {
+                useUTC: false
+            },
+
+            title: {
+                text: ''
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150,
+                labels: {
+                		style: {
+                	 		color: 'white'
+                	}
+                }
+            },
+            yAxis: {
+                title: {
+                	text: 'Voltage',
+                	style: {
+                		color: 'white'
+                	}
+                },
+                gridLineColor: '#424242',
+                plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#18ffff'
+                }]
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b><br/>',
+                pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Voltage data',
+                color: '#76ff03',
+                data: (function () {
+      // generate an array of random data
+                var data = [],
+                time = (new Date()).getTime(),
+                i;
+
+                for (i = -69; i <= 0; i += 1) {
+                    data.push({
+                        x: time + i * 1000,
+                        y: voltage_val
+                    });
+                }
+                return data;
+                }())
+            }]
+        });
+    });    
+	</script>
+
+	<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+        Highcharts.chart('current_graph', {
+            chart: {
+            type: 'spline',
+            backgroundColor:'rgba(255, 255, 255, 0.0)',
+            animation: Highcharts.svg, // don't animate in old IE
+            marginRight: 10,
+                events: {
+                    load: function () {
+
+        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function () {
+                                var x = (new Date()).getTime(), // current time
+                                y = current_val;
+                        series.addPoint([x, y], true, true);
+                        }, 1000);
+                    }
+                }
+            },
+
+            time: {
+                useUTC: false
+            },
+
+            title: {
+                text: ''
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150,
+                labels: {
+                		style: {
+                	 		color: 'white'
+                	}
+                }
+            },
+            yAxis: {
+                title: {
+                text: 'Current',
+                style: {
+                		color: 'white'
+                	}
+                },
+                gridLineColor: '#424242',
+                plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                }]
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b><br/>',
+                pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Current data',
+                color: '#80deea',
+                data: (function () {
+      // generate an array of random data
+                var data = [],
+                time = (new Date()).getTime(),
+                i;
+
+                for (i = -69; i <= 0; i += 1) {
+                    data.push({
+                        x: time + i * 1000,
+                        y: current_val
+                    });
+                }
+                return data;
+                }())
+            }]
+        });
+    });    
+	</script>
+
+	<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+        Highcharts.chart('frequency_graph', {
+            chart: {
+            type: 'spline',
+            backgroundColor:'rgba(255, 255, 255, 0.0)',
+            animation: Highcharts.svg, // don't animate in old IE
+            marginRight: 10,
+                events: {
+                    load: function () {
+
+        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function () {
+                                var x = (new Date()).getTime(), // current time
+                                y = freq_val;
+                        series.addPoint([x, y], true, true);
+                        }, 1000);
+                    }
+                }
+            },
+
+            time: {
+                useUTC: false
+            },
+
+            title: {
+                text: ''
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150,
+                labels: {
+                		style: {
+                	 		color: 'white'
+                	}
+                }
+            },
+            yAxis: {
+                title: {
+                text: 'Frequency',
+                style: {
+                		color: 'white'
+                	}
+                },
+                gridLineColor: '#424242',
+                plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#fb8c00'
+                }]
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b><br/>',
+                pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Frequency data',
+                color: '#fb8c00',
+                data: (function () {
+      // generate an array of random data
+                var data = [],
+                time = (new Date()).getTime(),
+                i;
+
+                for (i = -69; i <= 0; i += 1) {
+                    data.push({
+                        x: time + i * 1000,
+                        y: freq_val
+                    });
+                }
+                return data;
+                }())
+            }]
+        });
+    });    
+	</script>
+	
    	
   </head>
   <body>
   		<div class="header">
   			<div class="header-text">
-  				<p> SEMPAL </p><br>
+  				<p> SEMPALS </p><br>
   			</div> 
   		</div>
   		<div id="data-wrapper">
@@ -46,8 +333,10 @@
 							</div>
 						</p>
 						<br>
+					</div>					
+					<div id="voltage-container" style="height: 150px; width: 280px;">				
 					</div>
-					<div id="voltage-container" style="height: 150px; width: 280px;">
+					<div id="voltage_graph">
 					</div>
 				</div>
 				<div id="current-tab-wrapper">
@@ -63,6 +352,8 @@
 					</div>
 					<div id="current-container" style="height: 150px; width: 280px;">
 					</div>
+					<div id="current_graph">
+					</div>
 				</div>
 				<div id="frequency-tab-wrapper">
 					<div id="frequency-data">
@@ -76,7 +367,10 @@
 					</div>
 					<div id="frequency-container" style="height: 150px; width: 280px;">
 					</div>
+					<div id="frequency_graph">
+					</div>
 				</div>
+				
 			</div>
 		</div>
 		<div class="load-status-header">
@@ -127,7 +421,5 @@
 				</div>
 			</div>
 		</div>
-  
-	
   </body>
 </html>

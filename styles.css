@@ -47,12 +47,13 @@ body{
 
 #voltage-tab-wrapper{
 	display: table-cell; 
-	background-image : linear-gradient(to right, #c62828, #d32f2f, #f44336, #e57373, #ef9a9a);
+	background-image : linear-gradient(to right, #212121, #424242, #616161);
 	width: 410px;
 	height: 300px;
 	overflow: hidden;
 	font-size: 20px;
 	box-sizing: border-box;
+	border : 4px #18ffff;
 	/*
 	outline-style: solid;
 	outline-color: black;
@@ -76,12 +77,13 @@ body{
 }
 
 #voltage_unit{
-	text-shadow: 2px 2px red;
+	
 }
+
 
 #current-tab-wrapper{
 	display: table-cell;
-	background-image: linear-gradient(to right, #6a1b9a, #8e24aa, #ab47bc, #ba68c8, #ce93d8);
+	background-image : linear-gradient(to right, #212121, #424242, #616161);
 	width: 430px;
 	height: 300px;
 	overflow: hidden;
@@ -108,7 +110,7 @@ body{
 
 #frequency-tab-wrapper{
 	display: table-cell;
-	background-image : linear-gradient(to right, #00838f, #0097a7, #00acc1, #00bcd4, #26c6da, #4dd0e1, #80deea);
+	background-image : linear-gradient(to right, #212121, #424242, #616161);
 	width: 400px;
 	height: 300px;
 	overflow: hidden;
@@ -136,7 +138,7 @@ body{
 }
 
 .load-status-header{
-	background-image: linear-gradient(to right, #e65100, #ef6c00, #f57c00, #fb8c00, #ff9800, #ffb74d);
+	background-image: linear-gradient(to right, #1a237e, #303f9f, #3f51b5, #7986cb);
 	margin-top: 10px;
 	height : 60px;
 	padding : 0px;
@@ -150,7 +152,7 @@ body{
 	color : white;
 	font-size: 40px;
 	margin-bottom: 4px;
-	text-shadow: 3px 3px #e65100;
+	text-shadow: 3px 3px black;
 }
 
 #load-status-wrapper{
@@ -166,7 +168,7 @@ body{
 
 #first-load{
 	display: table-cell; 
-	background-image : linear-gradient(to right, #64dd17, #76ff03, #b2ff59, #ccff90);
+	background-image : linear-gradient(to right, #212121, #424242, #616161);
 	width: 320px;
 	height: 200px;
 	overflow: hidden;
@@ -194,7 +196,7 @@ body{
 
 #second-load{
 	display: table-cell; 
-	background-image : linear-gradient(to right, #ffd600, #ffea00, #ffff00, #ffff8d);
+	background-image : linear-gradient(to right, #212121, #424242, #616161);
 	width: 330px;
 	height: 200px;
 	margin-right: 10px;
@@ -222,7 +224,7 @@ body{
 
 #third-load{
 	display: table-cell; 
-	background-image : linear-gradient(to right, #aeea00, #c6ff00, #eeff41, #f4ff81);
+	background-image : linear-gradient(to right, #212121, #424242, #616161);
 	width: 335px;
 	height: 200px;
 	margin-right: 10px;
@@ -250,7 +252,7 @@ body{
 
 #fourth-load{
 	display: table-cell; 
-	background-image : linear-gradient(to right, #00695c, #00796b, #00897b, #009688, #26a69a, #80cbc4, #b2dfdb);
+	background-image : linear-gradient(to right, #212121, #424242, #616161);
 	width: 342px;
 	height: 200px;
 	margin-right: 10px;
@@ -274,6 +276,45 @@ body{
 #fourth-load-status{
 	font-family: 'Viga', sans-serif;
 	text-shadow : 2px 2px 2px black;
+}
+
+#submit_tab{
+	background-image : linear-gradient(to right, #1a237e, #303f9f, #3f51b5, #7986cb); 
+}
+/* used margin-top as negative and bottom paramters to deal with the 
+   parent div resizing issue */
+#voltage_graph {
+    width: 380px;
+    height: 320px;
+    padding-top: 10px;
+    margin-top: -200px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+
+   /* margin: 0 auto; */
+}
+
+#current_graph {
+    width: 380px;
+    height: 320px;
+    padding-top: 10px;
+    margin-top: 20px;
+    bottom: 10px;
+    margin-top: -200px;
+   
+
+   /* margin: 0 auto; */
+}
+
+#frequency_graph {
+    width: 380px;
+    height: 320px;
+    padding-top: 10px;
+    margin-top: 20px;
+    bottom: 10px;
+    margin-top: -200px;
+    
+   /* margin: 0 auto; */
 }
 
 

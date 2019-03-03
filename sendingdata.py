@@ -25,9 +25,9 @@ def send_data():
 				current_a = random.randint(1,10)
 				freq_a = random.randint(1,10)
 				data = {
-						"voltage_reading" : voltage_a,
-						"current_reading" : current_a,
-						"frequency_reading" : freq_a
+						"voltage_reading" : '%.2f'%voltage_a,
+						"current_reading" : '%.2f'%current_a,
+						"frequency_reading" : '%.2f'%freq_a
 				}		
 				print (data)
 				return data

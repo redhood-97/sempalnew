@@ -99,12 +99,12 @@ def send_data():
                         np.array(apparent_power_a,dtype=float)
                         np.array(freq,dtype=float)
                         data = {
-                                    "voltage_reading" : voltage_a,
-                                    "current_reading" : current_a,
-                                    "real_power_rating" : real_power_a,
-                                    "reactive_power_rating" : reactive_power_a,
-                                    "apparent_power_rating" : apparent_power_a,
-                                    "frequency_reading" : freq
+                                    "voltage_reading" : '%.2f'%voltage_a,
+                                    "current_reading" : '%.2f'%current_a,
+                                    "real_power_rating" : '%.2f'%real_power_a,
+                                    "reactive_power_rating" : '%.2f'%reactive_power_a,
+                                    "apparent_power_rating" : '%.2f'%apparent_power_a,
+                                    "frequency_reading" : '%.2f'%freq
                         }
                         print (data)
                         return data

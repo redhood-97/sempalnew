@@ -19,6 +19,24 @@
     <script type="text/javascript" src="scripts/app.js" charset="utf-8">
     </script>
 	-->
+	<script type="text/javascript" charset="utf-8">
+		window.onload = maxWindow;
+
+    	function maxWindow() {
+        		window.moveTo(0, 0);
+
+        		if (document.all) {
+            			top.window.resizeTo(screen.availWidth, screen.availHeight);
+        		}
+
+        		else if (document.layers || document.getElementById) {
+            			if (top.window.outerHeight < screen.availHeight || top.window.outerWidth < screen.availWidth) {
+                				top.window.outerHeight = screen.availHeight;
+                				top.window.outerWidth = screen.availWidth;
+            			}
+        		}
+    	}
+	</script>
 
 	<script type="text/javascript" charset="utf-8">
 		var request = new XMLHttpRequest();
@@ -26,7 +44,8 @@
     	current_val = 0;
         freq_val = 0;
     	function call() {
-        	request.open('GET', 'http://192.168.43.249:8080/watch', true);
+        	//request.open('GET', 'http://192.168.43.249:8080/watch', true);
+        	request.open('GET', 'http://localhost:8080/watch', true);
         	request.onload = function () {
 
         // console.log(this.responseText);
@@ -386,42 +405,59 @@
 			<div id="load-row">
 				<div id="first-load">
 					<div id="first-load-name">
-						<p><b> Load 1 </b>
-						</p>
-						<div id="first-load-status">
-							<p> ON
-							</p>
-						</div>
+						<b> Load 1 : <span id="first-load-status">
+							 ON
+						</span>
+						 </b>
+					</div>
+					<div id="first-load-bpi">
+						<b> BPI : <span id="first-load-bpi-value">
+							2.3
+						</span>
+						</b>
 					</div>
 				</div>
 				<div id="second-load">
 					<div id="second-load-name">
-						<p><b> Load 2 </b>
-						</p>
-						<div id="second-load-status">
-							<p> OFF
-							</p>
-						</div>
+						<b> Load 2 : <span id="second-load-status">
+							OFF							
+						</span> 
+						</b>
+					</div>
+					<div id="second-load-bpi">
+						<b> BPI : <span id="second-load-bpi-value">
+							1.8
+						</span>
+						</b>
 					</div>
 				</div>
 				<div id="third-load">
 					<div id="third-load-name">
-						<p><b> Load 3 </b>
-						</p>
-						<div id="third-load-status">
-							<p> ON
-							</p>
-						</div>
+						<b> Load 3 : 
+						<span id="third-load-status">
+							 ON
+						</span> 
+					    </b>
+					</div>
+					<div id="third-load-bpi">
+						<b> BPI : <span id="third-load-bpi-value">
+							1.2
+						</span>
+						</b>
 					</div>
 				</div>
 				<div id="fourth-load">
 					<div id="fourth-load-name">
-						<p><b> Load 4 </b>
-						</p>
-						<div id="fourth-load-status">
-							<p> OFF
-							</p>
-						</div>
+						<b> Load 4 : <span id="fourth-load-status">
+							OFF
+						</span> 
+					    </b>
+					</div>
+					<div id="fourth-load-bpi">
+						<b> BPI : <span id="fourth-load-bpi-value">
+							2.2
+						</span>
+						</b>
 					</div>
 				</div>
 			</div>

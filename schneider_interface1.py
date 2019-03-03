@@ -12,19 +12,21 @@ from flask_restful import Resource, Api
 
 import numpy as np
 
-print("========================================================================")
-print("                                                                        ")
-print("        _______                                                __       ")
-print("       / _____/  ________   ___   ____   _______   _______    / /       ")
-print("      / /____   / ____  /  / _ '.'   /  / ___  /  /____  /   / /        ")
-print("     /____  /  / /___/ /  / / / / / /  / /  / /  _____/ /   / /         ")
-print("         / /  / ______/  / / / / / /  / /  / /  / ___  /   / /          ")
-print("   _____/ /  / /_____   / / / / / /  / /__/ /  / /__/ /_  / /___        ")
-print("  /______/  /_______/  /_/ /_/ /_/  / _____/  /________/ /_____/        ")
-print("                                   / /                                  ")
-print("                                  /_/                                   ")
-print("                                                                        ")
-print("========================================================================")
+import RPi.GPIO as GPIO
+
+print("====================================================================")
+print("                                                                    ")
+print("        _______                                     __              ")
+print("       / _____/________ ___   ___________ _______  / / ______       ")
+print("      / /____ / ____  // _ '.'   / ___  //____  / / / / ____/       ")
+print("     /____  // /___/ // / / / / / /  / /_____/ / / / / /___         ")
+print("         / // ______// / / / / / /  / // ___  / / / /___  /         ")
+print("   _____/ // /______/ / / / / / /__/ // /__/ /_/ /_____/ /          ")
+print("  /______//__________/ /_/ /_/ _____//____________/_____/           ")
+print("                            / /                                     ")
+print("                           /_/                                      ")
+print("                                                                    ")
+print("====================================================================")
 
 
 app = Flask(__name__)
@@ -108,6 +110,95 @@ def send_data():
                         return data
         #decision(<some parameters>)
 
+#####################################################
+########### the GPIO pin initial settings ###########
+####################################################
+
+l0=29
+l1=31
+l2=33
+l3=35
+
+#setting up the pins
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(l0, GPIO.OUT)
+GPIO.setup(l1, GPIO.OUT)
+GPIO.setup(l2, GPIO.OUT)
+GPIO.setup(l3, GPIO.OUT)
+#initializing the pin
+GPIO.output(l0, False)
+GPIO.output(l1, False)
+GPIO.output(l2, False)
+GPIO.output(l3, False)
+
+##################################################
+##################################################
+
+
+
+#################################################
+###########   Decision making  #################
+###############################################
+
+
+P=[50,40,30,20]
+Q=[50,40,30,20]
+UBR=[4,3,2,1]
+V=[220,220,220,220]
+S=[]
+state_val=[1,1,1,1]
+bpi=[0,0,0,0]
+
+def read_data():
+    for i in [0,1,2,3]:
+        P[i]=float(input("Enter real power demand for Bus "+str(i)+":"))
+        Q[i]=float(input("Enter reactive power demand for Bus "+str(i)+":"))
+        V[i]=float(input("Enter required voltage for Bus "+str(i)+":"))
+        X[i]=float(input("Enter line reactance for Bus "+str(i)+":"))
+        UBR[i]=float(input("Enter User Baded Ranking for Bus "+str(i)+":"))
+
+
+def interface_relay():
+    GPIO.output(l0,True) if state_val[0]==1 else GPIO.output(l0,False)
+    GPIO.output(l1,True) if state_val[1]==1 else GPIO.output(l1,False)
+    GPIO.output(l2,True) if state_val[2]==1 else GPIO.output(l2,False)
+    GPIO.output(l3,True) if state_val[3]==1 else GPIO.output(l3,False)
+
+def set_priority():
+    for i in [0,1,2,3]:
+        S[i]=sqrt(pow(P[i],2)+pow(Q[i],2))
+        bpi[i]=(P[i]*UBR[i]*(2*Q[i]*X[i]-V[i]))/(2*X[i]*S[i])
+    return
+ 
+def change_state(k):
+    for i in [0,1,2,3]:
+        if(bpi[i]>k):
+            state_val[i]=1
+        else:
+            state_val[i]=0
+    return
+def decision(v,f):
+    set_priority()
+    bpi_sorted=bpi
+    bpi_sorted.sort()
+    v=v/v_base;
+    if(f<49.7 or v<0.97)
+        change_state(bpi_sorted[0])#least imp load
+    else if(f<49.4 or v<0.94)
+        change_state(bpi_sorted[1])#second least imp load
+    else if(f<49.1 or v<0.91)
+        change_state(bpi_sorted[2])#third least imp load
+    else if(f<48.8 pt v<0.88)
+        change_state(bpi_sorted[3])#third least imp load or most imp load
+    else
+        state_val=[1,1,1,1] #engage all loads
+    inteface_relay()
+    return
+
+#################################################################
+#################################################################
+#################################################################
+
 @app.route('/watch')
 @cross_origin()
 def watch():
@@ -121,7 +212,7 @@ def watch():
                 return response
 
 if __name__ == "__main__":
-        app.run(host='0.0.0.0', port=8080, debug=True)
+        app.run(host='192.168.43.249', port=8080, debug=True)
 
 
 

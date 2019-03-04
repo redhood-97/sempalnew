@@ -136,10 +136,10 @@ def send_data():
         #read_holding_registers has an offset of 4000 to begin with
     	       while True:
                         voltage_a=c.read_holding_registers(166,1)#list output for integer take voltage_a[0]
-        		#voltage_a=voltage_a[0]
+        		voltage_a=voltage_a[0]
                 #print voltage_a
                         current_a=c.read_holding_registers(150,1)
-        		#current_a=current_a[0]
+        		current_a=current_a[0]
                 #print current_a
                         real_power_a=c.read_holding_registers(208,1)
         		#real_power_a=real_power_a[0]
@@ -151,7 +151,8 @@ def send_data():
         		#apparent_power_a=apparent_power_a[0]
                 #print apparent_power_a
                         freq=c.read_holding_registers(159,1)
-                        freq=freq[0]/10
+                        #freq=freq[0]/10
+			freq=50
                 #move this part to decision in case of load scheduling
                         #set_priority()
                         #print_priority()
@@ -165,9 +166,6 @@ def send_data():
                         data = {
                                     "voltage_reading" : '%.2f'%voltage_a,
                                     "current_reading" : '%.2f'%current_a,
-                                    "real_power_rating" : '%.2f'%real_power_a,
-                                    "reactive_power_rating" : '%.2f'%reactive_power_a,
-                                    "apparent_power_rating" : '%.2f'%apparent_power_a,
                                     "frequency_reading" : '%.2f'%freq,
                                     "load_0_status": "ON" if state_val[0]==1 else "OFF",
                                     "load_1_status": "ON" if state_val[1]==1 else "OFF",
@@ -218,8 +216,12 @@ def decision(mydata):
         change_state(bpi_sorted[0])#least imp load
         print("Stage I")
     else:
-        state_val=[1,1,1,1] #engage all loads
-    inteface_relay()
+        state_val[0]=1
+	state_val[1]=1
+	state_val[2]=1
+	state_val[3]=1 #engage all loads
+	print("Safe stage")
+    interface_relay()
     return
 
 ##################################################

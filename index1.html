@@ -59,6 +59,16 @@
         		current_val = data["current_reading"] - 0.0;
         		freq_val = data["frequency_reading"] - 0.0;
         		voltage_val = data["voltage_reading"] - 0.0;
+
+                $('#first-load-status').text(data["load_0_status"]);
+                $('#second-load-status').text(data["load_1_status"]);
+                $('#third-load-status').text(data["load_2_status"]);
+                $('#fourth-load-status').text(data["load_3_status"]);
+
+                $('#first-load-bpi-value').text(data["bpi_0"]);
+                $('#second-load-bpi-value').text(data["bpi_1"]);
+                $('#third-load-bpi-value').text(data["bpi_2"]);
+                $('#fourth-load-bpi-value').text(data["bpi_3"]);
     		}
     		request.send();
 		}
